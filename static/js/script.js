@@ -287,6 +287,24 @@ if ('IntersectionObserver' in window) {
     });
 }
 
+// Handle owner image error - try PNG fallback, then placeholder
+function handleOwnerImageError(img) {
+    if (img.src.includes('owner.jpg')) {
+        // Try PNG version
+        img.onerror = function() {
+            this.onerror = null;
+            this.src = img.src.replace('owner.jpg', 'owner.png');
+        };
+        img.src = img.src.replace('owner.jpg', 'owner.png');
+    } else if (img.src.includes('owner.png')) {
+        // If PNG also fails, use local placeholder or keep current image
+        img.onerror = null;
+        // Use a local placeholder image path (relative to static folder)
+        const basePath = img.src.substring(0, img.src.lastIndexOf('/images/'));
+        img.src = basePath + '/images/owner.jpg';
+    }
+}
+
 // Scroll to Top Button
 const scrollTopBtn = document.createElement('button');
 scrollTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';

@@ -60,7 +60,7 @@
                     <div class="owner-content">
                         <div class="owner-image-wrapper">
                             <div class="owner-image-frame">
-                                <img src="{{ url_for('static', filename='images/owner.jpg') }}" alt="{{ data.owner }}" class="owner-image" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop'">
+                                <img src="{{ url_for('static', filename='images/owner.jpg') }}" alt="{{ data.owner }}" class="owner-image" onerror="handleOwnerImageError(this)">
                                 <div class="owner-image-overlay"></div>
                             </div>
                         </div>
