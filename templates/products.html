@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - {{ data.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-milk-bottle"></i>
+                <span>{{ data.name }}</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/#home" class="nav-link">Home</a></li>
+                <li><a href="/#products" class="nav-link active">Products</a></li>
+                <li><a href="/#about" class="nav-link">About</a></li>
+                <li><a href="/#testimonials" class="nav-link">Reviews</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+                <li><a href="/products" class="nav-link btn-order">Order Now</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Products Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Our Products</h1>
+            <p>Fresh, premium quality dairy products at your doorstep</p>
+        </div>
+    </section>
+
+    <!-- All Products Section -->
+    <section class="all-products">
+        <div class="container">
+            <div class="products-grid-full">
+                {% for product in data.products %}
+                <div class="product-card-large">
+                    <div class="product-image-large">
+                        <img src="{{ product.image }}" alt="{{ product.name }}">
+                        <div class="product-badge">Fresh Daily</div>
+                    </div>
+                    <div class="product-info-large">
+                        <h3>{{ product.name }}</h3>
+                        <p class="product-description">{{ product.description }}</p>
+                        <div class="product-features">
+                            {% for feature in product.features %}
+                            <span class="feature-tag">{{ feature }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="product-price-large">
+                            <span class="price">${{ "%.2f"|format(product.price) }}</span>
+                            <span class="unit">{{ product.unit }}</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-product" onclick="addToCart({{ product.id }})">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-secondary" onclick="subscribeProduct({{ product.id }})">
+                                <i class="fas fa-calendar-check"></i> Subscribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Table -->
+    <section class="pricing-table">
+        <div class="container">
+            <h2 class="section-title">Pricing Comparison</h2>
+            <div class="table-responsive">
+                <table class="pricing-table-content">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Subscription Discount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in data.products %}
+                        <tr>
+                            <td><strong>{{ product.name }}</strong></td>
+                            <td>{{ product.unit }}</td>
+                            <td class="price-cell">${{ "%.2f"|format(product.price) }}</td>
+                            <td class="discount-cell">Up to 15% OFF</td>
+                            <td><a href="#contact" class="btn btn-small">Order</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-milk-bottle"></i> {{ data.name }}</h3>
+                    <p>{{ data.tagline }}</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#home">Home</a></li>
+                        <li><a href="/#products">Products</a></li>
+                        <li><a href="/#about">About</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 {{ data.name }}. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        function addToCart(productId) {
+            alert('Product added to cart! Redirecting to checkout...');
+            // Add cart functionality here
+        }
+        
+        function subscribeProduct(productId) {
+            alert('Redirecting to subscription page...');
+            window.location.href = '/#contact';
+        }
+    </script>
+</body>
+</html>
+
