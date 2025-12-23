@@ -110,14 +110,14 @@ body {
     box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
 }
 
-.hamburger {
+.farm {
     display: none;
     flex-direction: column;
     cursor: pointer;
     gap: 5px;
 }
 
-.hamburger span {
+.farm span {
     width: 25px;
     height: 3px;
     background: var(--primary-color);
@@ -1356,7 +1356,7 @@ section {
 
 /* ===== Responsive Design ===== */
 @media (max-width: 768px) {
-    .hamburger {
+    .farm {
         display: flex;
     }
     

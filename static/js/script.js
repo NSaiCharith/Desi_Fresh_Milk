@@ -1,11 +1,11 @@
 // Mobile Menu Toggle
-const hamburger = document.querySelector('.hamburger');
+const farm = document.querySelector('.farm');
 const navMenu = document.querySelector('.nav-menu');
 
-if (hamburger) {
-    hamburger.addEventListener('click', () => {
+if (farm) {
+    farm.addEventListener('click', () => {
         navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active');
+        farm.classList.toggle('active');
     });
 }
 
@@ -13,7 +13,7 @@ if (hamburger) {
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
         navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
+        farm.classList.remove('active');
     });
 });
 
