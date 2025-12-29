@@ -253,10 +253,18 @@ document.querySelectorAll('.stat-item, .stat-card').forEach(stat => {
     statsObserver.observe(stat);
 });
 
-// Add to Cart Functionality (Placeholder)
+// Add to Cart Functionality - This will be overridden by cart.js if loaded
+// Keep this as fallback for pages that don't load cart.js
 function addToCart(productId) {
-    showNotification('Product added to cart!', 'success');
-    // Add actual cart functionality here
+    // If cart.js is loaded, use its addToCart function
+    if (typeof window.addToCart === 'function' && window.addToCart !== addToCart) {
+        window.addToCart(productId);
+        return;
+    }
+    
+    // Fallback if cart.js is not loaded
+    console.warn('cart.js not loaded, using fallback');
+    showNotification('Cart is loading. Please try again in a moment.', 'error');
 }
 
 // Subscribe Functionality (Placeholder)

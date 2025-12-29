@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - {{ data.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-milk-bottle"></i>
+                <span>{{ data.name }}</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/#home" class="nav-link">Home</a></li>
+                <li><a href="/products" class="nav-link">Products</a></li>
+                <li><a href="/#about" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+                <li>
+                    <a href="/cart" class="nav-link cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="farm">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Section -->
+    <section class="cart-section" style="margin-top: 100px; padding: 3rem 0;">
+        <div class="container">
+            <h1 class="section-title">Shopping Cart</h1>
+            
+            <div class="cart-container">
+                <div class="cart-items">
+                    <div id="cartItemsList" class="cart-items-list">
+                        <!-- Cart items will be dynamically inserted here -->
+                    </div>
+                    <div id="emptyCart" class="empty-cart" style="display: none; text-align: center; padding: 4rem;">
+                        <i class="fas fa-shopping-cart" style="font-size: 5rem; color: #ccc; margin-bottom: 2rem;"></i>
+                        <h2>Your cart is empty</h2>
+                        <p style="margin: 1rem 0 2rem; color: #666;">Add some products to get started!</p>
+                        <a href="/products" class="btn btn-primary">Browse Products</a>
+                    </div>
+                </div>
+                
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    
+                    <!-- Delivery Options -->
+                    <div class="delivery-options">
+                        <h4><i class="fas fa-shipping-fast"></i> Delivery Options</h4>
+                        <div class="delivery-option" onclick="if(cartManager) cartManager.setDeliveryOption('free')">
+                            <input type="radio" name="delivery" id="deliveryFree" value="free">
+                            <label for="deliveryFree">
+                                <span class="delivery-name">Free Delivery</span>
+                                <span class="delivery-desc">5-7 business days</span>
+                                <span class="delivery-price">$0.00</span>
+                            </label>
+                        </div>
+                        <div class="delivery-option" onclick="if(cartManager) cartManager.setDeliveryOption('standard')">
+                            <input type="radio" name="delivery" id="deliveryStandard" value="standard">
+                            <label for="deliveryStandard">
+                                <span class="delivery-name">Standard Delivery</span>
+                                <span class="delivery-desc">3-5 business days</span>
+                                <span class="delivery-price">$2.99</span>
+                            </label>
+                        </div>
+                        <div class="delivery-option" onclick="if(cartManager) cartManager.setDeliveryOption('express')">
+                            <input type="radio" name="delivery" id="deliveryExpress" value="express">
+                            <label for="deliveryExpress">
+                                <span class="delivery-name">Express (1-Day)</span>
+                                <span class="delivery-desc">Next business day</span>
+                                <span class="delivery-price">$9.99</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-divider"></div>
+                    
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row product-discount-row" id="productDiscountRow" style="display: none; color: var(--success-color);">
+                        <span><i class="fas fa-tag"></i> Product Discounts:</span>
+                        <span id="productDiscountAmount" style="font-weight: 700;">-$0.00</span>
+                    </div>
+                    <div class="summary-row discount-row" id="discountRow" style="display: none; color: var(--success-color);">
+                        <span><i class="fas fa-percent"></i> Order Discount:</span>
+                        <span id="discountAmount" style="font-weight: 700;">-$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span><i class="fas fa-truck"></i> Delivery:</span>
+                        <span id="deliveryCharge">$0.00</span>
+                    </div>
+                    <div class="summary-divider-small"></div>
+                    <div class="summary-row tax-breakdown">
+                        <span><i class="fas fa-receipt"></i> Service Tax (2.5%):</span>
+                        <span id="serviceTax">$0.00</span>
+                    </div>
+                    <div class="summary-row tax-breakdown">
+                        <span><i class="fas fa-truck"></i> Delivery Tax (1.5%):</span>
+                        <span id="deliveryTax">$0.00</span>
+                    </div>
+                    <div class="summary-row tax-breakdown">
+                        <span><i class="fas fa-file-invoice"></i> GST (6%):</span>
+                        <span id="gst">$0.00</span>
+                    </div>
+                    <div class="summary-row tax-total">
+                        <span><strong>Total Tax:</strong></span>
+                        <span id="totalTax"><strong>$0.00</strong></span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                    <div class="savings-badge" id="savingsBadge" style="display: none;">
+                        <i class="fas fa-piggy-bank"></i> You saved <span id="savingsAmount">$0.00</span>!
+                    </div>
+                    <button id="checkoutBtn" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1.5rem;" disabled>
+                        <i class="fas fa-lock"></i> Proceed to Checkout
+                    </button>
+                    <a href="/products" class="btn btn-secondary" style="width: 100%; margin-top: 1rem; text-align: center;">
+                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-milk-bottle"></i> {{ data.name }}</h3>
+                    <p>{{ data.tagline }}</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#home">Home</a></li>
+                        <li><a href="/products">Products</a></li>
+                        <li><a href="/#about">About</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 {{ data.name }}. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Pass product data to JavaScript
+        const productData = {{ data.products | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+</body>
+</html>
+

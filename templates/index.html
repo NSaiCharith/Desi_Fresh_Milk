@@ -22,6 +22,12 @@
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#testimonials" class="nav-link">Reviews</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li>
+                    <a href="/cart" class="nav-link cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
                 <li><a href="/products" class="nav-link btn-order">Order Now</a></li>
             </ul>
             <div class="farm">
@@ -115,7 +121,8 @@
                     <div class="plan-body">
                         <p>{{ plan.description }}</p>
                         <div class="plan-price">{{ plan.price }}</div>
-                        <a href="#contact" class="btn btn-plan">Subscribe Now</a>
+                        <div class="plan-frequency">{{ plan.frequency }}</div>
+                        <a href="/subscribe" class="btn btn-plan">Subscribe Now</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -314,7 +321,12 @@
         </div>
     </footer>
 
+    <script id="product-data" type="application/json">{{ data.products | tojson | safe }}</script>
+    <script>
+        // Pass product data to JavaScript
+        const productData = JSON.parse(document.getElementById('product-data').textContent);
+    </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 </body>
 </html>
-
